@@ -1,0 +1,250 @@
+﻿<Window x:Class="DuanZi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DuanZi"
+        mc:Ignorable="d"
+        Title="搞笑段子" Height="450" Width="800">
+    <Window.Resources>
+        <local:TypeTemplate x:Key="TypeTemplate"/>
+        <local:PathConverter x:Key="PathConverter"/>
+        <Style TargetType="ItemsControl">
+            <Setter Property="HorizontalAlignment" Value="Center" ></Setter>
+            <Setter Property="ItemTemplateSelector" Value="{StaticResource TypeTemplate}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <ScrollViewer ScrollChanged="ScrollViewer_OnScrollChanged" VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsVirtualizing="True"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        </Style>
+        <DataTemplate x:Key="ImageDataTemplate">
+            <Grid Margin="0,0,0,15" Background="#ccc">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30" ClipToBounds="True" CornerRadius="15">
+                            <Image Source="{Binding header,Converter={StaticResource PathConverter}}"/>
+                        </Border>
+                        <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock  Text="{Binding username}"/>
+                            <TextBlock Text="{Binding passtime}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="20" Margin="0,5" Grid.Row="1" Text="{Binding text}"/>
+                    <Image Width="500" Grid.Row="2" Source="{Binding image,Converter={StaticResource PathConverter}}"/>
+                    <Grid Grid.Row="3" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="点赞 "/>
+                            <TextBlock Text="{Binding up}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="鄙视 "/>
+                            <TextBlock Text="{Binding down}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <TextBlock Text="评论 "/>
+                            <TextBlock Text="{Binding comment}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3"  HorizontalAlignment="Right" Orientation="Horizontal">
+                            <TextBlock Text="分享 "/>
+                            <TextBlock Text="{Binding forward}"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="VideoDataTemplate">
+            <Grid Margin="0,0,0,15" Background="#ccc">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="300"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30" ClipToBounds="True" CornerRadius="15">
+                            <Image Source="{Binding header,Converter={StaticResource PathConverter}}"/>
+                        </Border>
+                        <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock  Text="{Binding username}"/>
+                            <TextBlock Text="{Binding passtime}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="20" Margin="0,5" Grid.Row="1" Text="{Binding text}"/>
+                    <ToggleButton Grid.Row="2">
+                        <ToggleButton.Template>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Grid Background="#000">
+                                    <MediaElement x:Name="video" LoadedBehavior="Manual" Width="500" Source="{Binding video,Converter={StaticResource PathConverter}}"/>
+                                    <Image Width="50" x:Name="image" Source="/DuanZi;component/Image/播放.png" Visibility="Visible"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Visibility" Value="Hidden" TargetName="image"></Setter>
+                                        <Setter TargetName="video" Property="LoadedBehavior" Value="Play"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </ToggleButton.Template>
+                    </ToggleButton>
+                    <Grid Grid.Row="3" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="点赞 "/>
+                            <TextBlock Text="{Binding up}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="鄙视 "/>
+                            <TextBlock Text="{Binding down}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <TextBlock Text="评论 "/>
+                            <TextBlock Text="{Binding comment}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3"  HorizontalAlignment="Right" Orientation="Horizontal">
+                            <TextBlock Text="分享 "/>
+                            <TextBlock Text="{Binding forward}"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TextDataTemplate">
+            <Grid Margin="0,0,0,15" Background="#ccc">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30" ClipToBounds="True" CornerRadius="15">
+                            <Image Source="{Binding header,Converter={StaticResource PathConverter}}"/>
+                        </Border>
+                        <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock  Text="{Binding username}"/>
+                            <TextBlock Text="{Binding passtime}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="20" Margin="0,5" Grid.Row="1" Text="{Binding text}"/>
+                    <Grid Grid.Row="2" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="点赞 "/>
+                            <TextBlock Text="{Binding up}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="鄙视 "/>
+                            <TextBlock Text="{Binding down}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <TextBlock Text="评论 "/>
+                            <TextBlock Text="{Binding comment}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3"  HorizontalAlignment="Right" Orientation="Horizontal">
+                            <TextBlock Text="分享 "/>
+                            <TextBlock Text="{Binding forward}"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="GifDataTemplate">
+            <Grid Margin="0,0,0,15" Background="#ccc">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30" ClipToBounds="True" CornerRadius="15">
+                            <Image Source="{Binding header,Converter={StaticResource PathConverter}}"/>
+                        </Border>
+                        <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock  Text="{Binding username}"/>
+                            <TextBlock Text="{Binding passtime}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="20" Margin="0,5" Grid.Row="1" Text="{Binding text}"/>
+                    <local:ImageGifView Width="500" Grid.Row="2" Source="{Binding gif,Converter={StaticResource PathConverter}}"/>
+                    <Grid Grid.Row="3" Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="点赞 "/>
+                            <TextBlock Text="{Binding up}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="鄙视 "/>
+                            <TextBlock Text="{Binding down}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <TextBlock Text="评论 "/>
+                            <TextBlock Text="{Binding comment}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3"  HorizontalAlignment="Right" Orientation="Horizontal">
+                            <TextBlock Text="分享 "/>
+                            <TextBlock Text="{Binding forward}"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <TabControl>
+            <TabItem Header="推荐">
+                <ItemsControl ItemsSource="{Binding MainData.AllList}"></ItemsControl>
+            </TabItem>
+            <TabItem Header="文字">
+                <ItemsControl ItemsSource="{Binding MainData.TextList}"></ItemsControl>
+            </TabItem>
+            <TabItem Header="图片">
+                <ItemsControl ItemsSource="{Binding MainData.ImageList}"></ItemsControl>
+            </TabItem>
+            <TabItem Header="视频">
+                <ItemsControl ItemsSource="{Binding MainData.VideoList}"></ItemsControl>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
